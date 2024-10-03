@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+  benthyga:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: benthyga
+    container_name: benthyga-service
+    volumes:
+      - .:/application:z
+    env_file:
+      - ./.env
+    ports:
+      - "8000:8000"
+    networks:
+      - backend_network
+
+  adapter:
+    image: eclipse-mosquitto
+    container_name: adapter
+    env_file:
+      - ./.env
+    networks:
+      - backend_network
+    ports:
+      - "1883:1883"
+
+
+networks:
+  backend_network:
